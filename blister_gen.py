@@ -275,7 +275,7 @@ def convert_to_step():
             gen.add_footer()
             # Save G-code
             gcode_path = "output.nc"
-            #gen.save_to_file(gcode_path)
+            gen.save_to_file(gcode_path)
 
             if pill_shape == "Oval":
                 result_temp = (
