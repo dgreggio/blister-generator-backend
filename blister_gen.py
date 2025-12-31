@@ -1,10 +1,13 @@
+import datetime
 import os
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, jsonify
 from flask_cors import CORS
 os.environ['PYOPENGL_PLATFORM'] = 'osmesa'
 os.environ['QT_QPA_PLATFORM'] = 'offscreen'
 import cadquery as cq
 import tempfile
+import zipfile
+from io import BytesIO
 
 from gcode_generator import *
 
@@ -272,7 +275,7 @@ def convert_to_step():
             gen.add_footer()
             # Save G-code
             gcode_path = "output.nc"
-            gen.save_to_file(gcode_path)
+            #gen.save_to_file(gcode_path)
 
             if pill_shape == "Oval":
                 result_temp = (
@@ -380,17 +383,41 @@ def convert_to_step():
         temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.step')
         temp_path = temp_file.name
         temp_file.close()
+        
 
         # Export the model as STEP file
         cq.exporters.export(result, temp_path)
+        step_file_path = temp_path
+        nc_file_path = gcode_path
+        
+        # Create a ZIP file in memory
+        memory_zip = BytesIO()
+        with zipfile.ZipFile(memory_zip, 'w', zipfile.ZIP_DEFLATED) as zf:
+            # Add STEP file
+            zf.write(step_file_path, os.path.basename(step_file_path))
+            # Add NC file
+            zf.write(nc_file_path, os.path.basename(nc_file_path))
+        
+        memory_zip.seek(0)
+        
+        # Clean up temporary files if needed
+        # os.remove(step_file_path)
+        # os.remove(nc_file_path)
+        
+        return send_file(
+            memory_zip,
+            mimetype='application/zip',
+            as_attachment=True,
+            download_name=f'blister_{datetime.now().strftime("%Y%m%d_%H%M%S")}.zip'
+        )
 
-        # Send the STEP file back to Flutter
+        '''# Send the STEP file back to Flutter
         response = send_file(
             temp_path,
             mimetype='application/STEP',
             as_attachment=True,
             download_name='output.step'
-        )
+        )'''
 
         # Clean up: delete temporary file after sending
         @response.call_on_close
