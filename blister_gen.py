@@ -1,7 +1,6 @@
 from flask import Flask, request, send_file
 from flask_cors import CORS
 import cadquery as cq
-from cadquery.vis import show
 import tempfile
 import os
 
@@ -390,7 +389,6 @@ def convert_to_step():
             as_attachment=True,
             download_name='output.step'
         )
-        show(result)
 
         # Clean up: delete temporary file after sending
         @response.call_on_close
@@ -413,11 +411,10 @@ def home():
     """
     return {'message': 'Server is running', 'endpoint': 'POST /convert'}
 
-
 if __name__ == '__main__':
-    # Run the Flask server on localhost port 8000
-    print("Server running on http://localhost:8000")
-    print("Endpoint: POST /convert")
-    app.run(host='0.0.0.0', port=8000, debug=False)
+    # Railway usa la variabile PORT, altrimenti default 8000
+    port = int(os.environ.get('PORT', 8000))
+    print(f"Server running on port {port}")
+    app.run(host='0.0.0.0', port=port, debug=False)  # debug=False per produzione
 
 
