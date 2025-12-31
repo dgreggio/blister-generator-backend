@@ -1,2 +1,2 @@
 [packages]
-system = ["mesa" , "libGL"]
+system = ["mesa" , "mesa-libGL"]
