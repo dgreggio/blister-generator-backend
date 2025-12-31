@@ -413,10 +413,9 @@ def home():
     """
     return {'message': 'Server is running', 'endpoint': 'POST /convert'}
 
+
 if __name__ == '__main__':
-    # Railway usa la variabile PORT, altrimenti default 8000
-    port = int(os.environ.get('PORT', 8000))
-    print(f"Server running on port {port}")
-    app.run(host='0.0.0.0', port=port, debug=False)  # debug=False per produzione
-
-
+    # Run the Flask server on localhost port 8000
+    print("Server running on http://localhost:8000")
+    print("Endpoint: POST /convert")
+    app.run(host='0.0.0.0', port=8000, debug=False)
