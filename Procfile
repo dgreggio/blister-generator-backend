@@ -1,0 +1,1 @@
+web: python blister_gen.py
