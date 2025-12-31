@@ -1,2 +1,18 @@
-[packages]
-system = ["mesa" , "mesa-libGL"]
+[phases.setup]
+nixPkgs = [
+    "python310",
+    "mesa",
+    "libGL",
+    "libGLU",
+    "xorg.libX11",
+    "xorg.libXext",
+    "xorg.libXrender",
+    "xorg.libICE",
+    "xorg.libSM"
+]
+
+[phases.install]
+cmds = ["pip install -r requirements.txt"]
+
+[start]
+cmd = "python blister_gen.py"
