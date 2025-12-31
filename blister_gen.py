@@ -1,5 +1,7 @@
 from flask import Flask, request, send_file
 from flask_cors import CORS
+os.environ['PYOPENGL_PLATFORM'] = 'osmesa'
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
 import cadquery as cq
 from cadquery.vis import show
 import tempfile
