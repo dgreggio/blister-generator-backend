@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = ["python310", "mesa"]
+
+[phases.install]
+cmds = ["pip install -r requirements.txt"]
+
+[start]
+cmd = "python blister_gen.py"
