@@ -272,47 +272,6 @@ def convert_to_step():
                 single_pass=True
             )
             
-            # Add deeper cuts for features along grid lines
-            for x_line in x_lines:
-                for feature in features:
-                    feat_x = float(feature.get('x'))
-                    feat_y = -float(feature.get('y'))
-                    feat_width = float(feature.get('width'))
-                    feat_height = float(feature.get('height'))
-                    feat_thickness = float(feature.get('thickness'))
-                    
-                    # Check if vertical line intersects this feature
-                    feat_left = feat_x - feat_width / 2
-                    feat_right = feat_x + feat_width / 2
-                    feat_bottom = feat_y - feat_height / 2
-                    feat_top = feat_y + feat_height / 2
-                    
-                    if feat_left <= x_line <= feat_right:
-                        # Add extra cut through this feature
-                        gen.add_comment(f"Extra cut through feature at x={x_line}")
-                        gen.cut_straight_line(x_line, feat_bottom, x_line, feat_top, 
-                                             depth=-feat_thickness, single_pass=True)
-            
-            for y_line in y_lines:
-                for feature in features:
-                    feat_x = float(feature.get('x'))
-                    feat_y = -float(feature.get('y'))
-                    feat_width = float(feature.get('width'))
-                    feat_height = float(feature.get('height'))
-                    feat_thickness = float(feature.get('thickness'))
-                    
-                    # Check if horizontal line intersects this feature
-                    feat_left = feat_x - feat_width / 2
-                    feat_right = feat_x + feat_width / 2
-                    feat_bottom = feat_y - feat_height / 2
-                    feat_top = feat_y + feat_height / 2
-                    
-                    if feat_bottom <= y_line <= feat_top:
-                        # Add extra cut through this feature
-                        gen.add_comment(f"Extra cut through feature at y={y_line}")
-                        gen.cut_straight_line(feat_left, y_line, feat_right, y_line, 
-                                             depth=-feat_thickness, single_pass=True)
-            
             gen.add_footer()
             
             # Save G-code
