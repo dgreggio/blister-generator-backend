@@ -290,10 +290,8 @@ def convert_to_step():
                     if feat_left <= x_line <= feat_right:
                         # Add extra cut through this feature
                         gen.add_comment(f"Extra cut through feature at x={x_line}")
-                        gen.add_line_move(x_line, feat_bottom, config.safe_z)
-                        gen.add_line_move(x_line, feat_bottom, -feat_thickness)
-                        gen.add_line_move(x_line, feat_top, -feat_thickness)
-                        gen.add_line_move(x_line, feat_top, config.safe_z)
+                        gen.cut_straight_line(x_line, feat_bottom, x_line, feat_top, 
+                                             depth=-feat_thickness, single_pass=True)
             
             for y_line in y_lines:
                 for feature in features:
@@ -312,10 +310,8 @@ def convert_to_step():
                     if feat_bottom <= y_line <= feat_top:
                         # Add extra cut through this feature
                         gen.add_comment(f"Extra cut through feature at y={y_line}")
-                        gen.add_line_move(feat_left, y_line, config.safe_z)
-                        gen.add_line_move(feat_left, y_line, -feat_thickness)
-                        gen.add_line_move(feat_right, y_line, -feat_thickness)
-                        gen.add_line_move(feat_right, y_line, config.safe_z)
+                        gen.cut_straight_line(feat_left, y_line, feat_right, y_line, 
+                                             depth=-feat_thickness, single_pass=True)
             
             gen.add_footer()
             

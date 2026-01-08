@@ -1,0 +1,20 @@
+// Crea una cartella nascosta .git che tiene traccia delle modifiche.
+// solo la prima volta
+git init
+
+// Prepara tutti i file nella cartella per essere salvati.
+git add .
+
+// Verifica cosa hai aggiunto
+// Non obbligatorio, ma un buon check
+git status
+
+// Aggiungi un commit con un commento
+git commit -m "Initial commit: backend Flask con CadQuery"
+
+// Solo se è la prima volta
+// Rinomina il branch principale in "main"
+git branch -M main
+
+// Carica tutto su GitHub nel main
+git push -u origin main
